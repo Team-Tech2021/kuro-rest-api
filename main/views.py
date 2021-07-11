@@ -8,11 +8,8 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 
-# GITHUB_OAUTH_ID = "9bbd97ddc2cda3583dcd"
-# GITHUB_OAUTH_SECRET = "08bdac333b3c1fea74115e8551ffd96649a39890"
 GITHUB_OAUTH_ID = "42c0b18ea0b0e2ea59c6"
 GITHUB_OAUTH_SECRET = "a863a072d3c74681b49c3d343160b9b130de4c36"
-# stripe.api_key = "sk_test_z4lk3dEgEep4vHPlUqgV29fy00uhnUn8TF"
 
 # Create your views here.
 def index(request):
