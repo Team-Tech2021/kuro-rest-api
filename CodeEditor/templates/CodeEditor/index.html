@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor</title>
+</head>
+<body>
+    <div class="row">
+        <div class="col-5" style="height: 100vh; border: 1px solid black; margin-left: 85px; overflow-y: auto;">
+          <h1>{{ title }}</h1>
+            {{ description|safe }}
+        </div>
+        <textarea id="codeEditor" class="col-5" style="height: 100vh; border: 1px solid black; margin-left: 25px; overflow-y: auto; resize: none;" name="code">{{ exist.code }}{{ starter }}</textarea>
+      </div>
+      <br>
+      <button type="button" class="btn btn-success" id="submit-button" style="margin-left: 800px">Submit Code</button>
+      <button type="button" class="btn btn-primary" id="check-button" style="margin-left: 25px">Check Code</button>
+      <br>
+      <br>
+    <div class="row" style="margin-left: 70px; border: 1px solid black; height: 100px; width: 1125px; overflow-y: auto;" id="output">
+        <h1>TestCase Output</h1>
+    </div>
+    <div class="row" style="margin-left: 70px; border: 1px solid black; height: 100px; width: 1125px; overflow-y: auto;" id="raw">
+        <h1>Raw Output</h1>
+    </div>
+    <script>
+        $(document).ready(function() {
+
+            $('textarea').keydown(function(e){
+                if(e.keyCode === 9) {
+                    let start = this.selectionStart;
+                    let end = this.selectionEnd;
+                    let $this = $(this);
+                    let value = $this.val();
+                    $this.val(value.substring(0, start) + '\t' + value.substring(end));
+                    this.selectionStart = this.selectionEnd = start + 1;
+                    e.preventDefault();
+                }
+            });
+
+            $("#check-button").click(function(event) {
+                let data = encodeURIComponent(document.getElementById('codeEditor').value);
+                document.getElementById("output").innerHTML = "<h1>Loading...</h1>"
+                $.ajax({
+                    url: `/problems/compile/?code=${data}&problem={{ id }}&token={{ token }}`,
+                    type: "get",
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        document.getElementById("raw").innerHTML = data["stdout"]
+                        document.getElementById("output").innerHTML = "<h1>Output</h1>"
+                        let errors = data["error"]
+                        let input = data["input"]
+                        let output = document.getElementById("output")
+                        for (let key in errors) {
+                            let div = document.createElement("DIV")
+                            if (errors[key] != "passed") {
+                                div.innerHTML = `<br><h4 style="color: red;">Test Case ${key}</h4> - <p style="color: red;">${errors[key]}</p><br>`
+                            } else {
+                                div.innerHTML = `<br><h4 style="color: green;">Test Case ${key}</h4> - <p style="color: green">${errors[key]}</p><br>`
+                            }
+                            output.appendChild(div);
+                        }
+                    },
+                    error: function(xhr) {
+                        document.getElementById("output").innerHTML += "<br><h1>Oops, there's an error. Please try to refresh to see if it would work, otherwise please report a bug report. Sorry for the inconvenience</h1>"
+                        console.log("error" + xhr.status);
+                    }
+                })
+            });
+
+            $("#submit-button").click(function(event) {
+                let data = encodeURIComponent(document.getElementById('codeEditor').value);
+                document.getElementById("output").innerHTML = "<h1>Loading...</h1>"
+                $.ajax({
+                    url: `/problems/compile/?code=${data}&problem={{ id }}&token={{ token }}`,
+                    type: "get",
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        document.getElementById("output").innerHTML = "<h1>Output</h1>"
+                        let errors = data["error"]
+                        let input = data["input"]
+                        let output = document.getElementById("output");
+                        let passed = true
+                        for (let key in errors) {
+                            if (errors[key] != "passed") {
+                                output.innerHTML = "<h1 style='color: red;'>You didn't pass at least 1 test, click run code button to check your output.</h1>"
+                                passed = false
+                            }
+                        }
+                        if (passed === true) {
+                            output.innerHTML = "<h1 style='color: green;'>Congratulation on finishing this problem!</h1>"
+                        }
+                    },
+                    error: function(xhr) {
+                        document.getElementById("output").innerHTML += "<br><h1>Oops, there's an error. Please try to refresh to see if it would work, otherwise please report a bug report. Sorry for the inconvenience</h1>"
+                        console.log("error" + xhr.status);
+                    }
+                })
+            });
+
+        });
+
+
+    </script>
+</body>
+</html>
