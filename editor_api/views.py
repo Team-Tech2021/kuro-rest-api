@@ -1,3 +1,6 @@
+from django.http import JsonResponse, HttpResponseRedirect, HttpRequest, request
+from .models import Problem
+
 from rest_framework.generics import (
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView
@@ -40,20 +43,34 @@ class CodeDetail(RetrieveUpdateDestroyAPIView):
     queryset = Code.objects.all()
     serializer_class = CodeSerializer
 
+class ProblemList(ListCreateAPIView):
+    queryset = Problem.objects.all()
+    serializer_class = ProblemSerializer
 
 
+class ProblemDetail(RetrieveUpdateDestroyAPIView):
+    # permission_classes = (IsOwnerOrReadOnly,)
+    queryset = Problem.objects.all()
+    serializer_class = ProblemSerializer
 
-def problems(request):
-    pass
-    # pros = PROBLEMS.copy()
-    # for i in pros:
-    #     try:
-    #         Passed.objects.get(user_id=request.user.id, problem_id=i["id"])
-    #         i["complete"] = "True"
-    #     except Passed.DoesNotExist:
-    #         i["complete"] = "False"
-    # return JsonResponse(pros, safe=False)
 
+# problems = Problem.objects.all()
+
+# def problem_pass(request):
+#     print(request)
+
+#     # pros = .copy()
+#     pros = Problem.objects.all()
+#     for i in pros:
+#         try:
+#             Passed.objects.get(user_id=request.user.id, problem_id=i.id)
+#             i["complete"] = "True"
+#         except Passed.DoesNotExist:
+#             i["complete"] = "False"
+#     return JsonResponse(pros, safe=False)
+# print(problem_pass(request))
+
+# # print(problems[0].description)
 
 PROBLEMS = [
     {
@@ -61,7 +78,6 @@ PROBLEMS = [
         "title": "Nth Fibonacci Sequence",
         "description": "<p>Write a program to compute nth number of a <a href=\"https://en.wikipedia.org/wiki/Fibonacci_number\">fibonacci number sequence</a>.</p><br>Starting Numbers: <code>nth_fib(1) = 0</code>, <code>nth_fib(2) = 1</code><br><br><p>Example Input & Output: </p><ul><li><code>nth_fib(2) = 1</code></li><li><code>nth_fib(6) = 5</code></li></ul><br><h4>Note:</h4><p>If you see a RecursionError, make sure you try again, the maximum number for input is 15.</p> <br><br><h4>Video Walkthrough</h4><iframe width='500' height='315' src='https://www.youtube.com/embed/Hq13p2I5UbY' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>",
         "starter": "def nth_fib(n):\n\tpass",
-
     },
     {
         "id": 2,

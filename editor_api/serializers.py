@@ -17,7 +17,9 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = "__all__"
 
-class ProblemsSerializer(serializers.ModelSerializer):
+class ProblemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Problem
         fields = "__all__"
+
+
