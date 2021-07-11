@@ -19,3 +19,4 @@ Template Project for starting up CRUD API with Django Rest Framework
   - Make sure to update other modules that would be affected by Model customizations. E.g. serializers, tests, etc.
 - makemigrations/migrate
 # kuro-rest-api
+# kuro-rest-api
