@@ -4,3 +4,4 @@ termcolor
 stripe
 gunicorn
 django-heroku
+django-environ    
