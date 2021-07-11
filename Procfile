@@ -1,1 +1,1 @@
-web: gunicorn api-kuro.wsgi
+web: gunicorn project.wsgi
