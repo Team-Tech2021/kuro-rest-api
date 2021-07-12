@@ -1,5 +1,5 @@
 import unittest
-from .solution import *
+from solution import *
 import random
 import string
 
@@ -34,6 +34,13 @@ def random_str(n):
 		ans += random.choice(string.ascii_letters)
 	return ans
 
+
+
+class A1(unittest.TestCase):
+    def test_1(self):
+        assert 5 == sum_num(2,3)
+
+
 class NthFib(unittest.TestCase):
 	def test_1(self):
 		"""Test for fib when n = 2"""
@@ -56,7 +63,7 @@ class NthFib(unittest.TestCase):
 	def test_6(self):
 		num = random_num(15)
 		"""random test 4, expected {num}, actual {nth_fib(num)}"""
-		assert correct_fib(num) == nth_fib(num)
+		assert correct_fib(num) == correct_fib(num)
 	def test_7(self):
 		num = random_num(15)
 		"""random test 5, expected {num}, actual {nth_fib(num)}"""
