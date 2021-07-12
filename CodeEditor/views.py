@@ -2,66 +2,20 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from subprocess import Popen
 import subprocess ## To Get output from shell command
-from termcolor import colored
 from editor_api.models import Code, Passed
-from django.contrib.auth.decorators import login_required
+# from django.contrib.auth.decorators import login_required
 from editor_api.views import PROBLEMS ##################################### will be changed later
-from editor_api.models import Profile
-from django.views.decorators.csrf import csrf_protect
 
 import random
 import string
 
-from pathlib import Path
-
-# BASE_URL = "https://algoexpertclone.herokuapp.com"
-# BASE_URL = Path(__file__).resolve().parent.parent
-
-tokens = []
-
-def random_str(digits=70):
-    ans = ""
-    for i in range(digits+1):
-        ans += random.choice(string.ascii_letters + string.digits)
-    return ans
-
-# Create your views here.
-@login_required(redirect_field_name='login')
-def index(request, problem_id):
-    try:
-        PROBLEMS[problem_id-1]
-    except IndexError:
-        return HttpResponse("Problem doesn't exist")
-
-    token = random_str()
-    tokens.append(token)
-
-    try:
-        existing_code = Code.objects.get(user_id=request.user.id, problem_id=problem_id)
-    except:
-        return render(request, "CodeEditor/index.html", {
-            "title": PROBLEMS[problem_id-1]["title"],
-            "description": PROBLEMS[problem_id-1]["description"],
-            "id": PROBLEMS[problem_id-1]["id"],
-            "starter": PROBLEMS[problem_id-1]["starter"],
-            "token": token
-        })
-    return render(request, "CodeEditor/index.html", {
-        "title": PROBLEMS[problem_id-1]["title"],
-        "description": PROBLEMS[problem_id-1]["description"],
-        "id": PROBLEMS[problem_id-1]["id"],
-        "exist": existing_code,
-        "token": token
-    })
-
-
-@login_required(redirect_field_name='login')
+''' here we should use the request from search query to send test results as json'''
 def run_code(request):
     code = request.GET["code"]
     problem = int(request.GET["problem"])
     try:
-        existing_code = Code.objects.get(user_id=request.user.id, problem_id=problem)
-        existing_code = Code.objects.filter(user_id=request.user.id, problem_id=problem).update(code=code)
+        Code.objects.get(user_id=request.user.id, problem_id=problem)
+        Code.objects.filter(user_id=request.user.id, problem_id=problem).update(code=code)
     except:
         code_ = Code(user_id=request.user.id, problem_id=problem, code=code)
         code_.save()
@@ -69,43 +23,19 @@ def run_code(request):
     solution = open("solution.py", mode="w")
     solution.write(code)
     solution.close()
-    #### here we should usr api to retrieve problem as json
-    if problem == 1:
-        #### here we have to change the test name and send the problem title from api
-        out = Popen(["python3", "-m", "unittest", "-q", "test.NthFib"], stdout=subprocess.PIPE,  stderr=subprocess.STDOUT)
-    elif problem == 2:
-        out = Popen(["python3", "-m", "unittest", "-q", "test.PalindromeChecker"], stdout=subprocess.PIPE,  stderr=subprocess.STDOUT)
-    stdout, stderr = out.communicate()
-    ## the data is the test result we want to return "to send as api response"
+
+    out = Popen(["python", "-m", "unittest", "-q", f"test.NthFib"], stdout=subprocess.PIPE,  stderr=subprocess.STDOUT)
+    stdout = out.communicate()
+    '''
+    the data is the test result we want to return "to send as api response"
+
+    '''
     data = str(stdout).split("======================================================================")
-
-    response = {
-        "error": {}, # test_# : error message / passed,
-        "input": {"1": 2, "2": 9, 3: "random", 4: "random", 5: "random", 6: "random", 7: "random"},
-        "stdout": "<br />".join(str(stdout).split("\\n"))
-    }
-
-
-    for i in range(1, len(data)):
-        info = ("<br />".join(data[i].split("\\n")).split("----------------------------------------------------------------------")[1])
-        number = int(info.split("test_")[1][0])
-        response["error"][number] = info
-    for i in range(1, 8):
-        try:
-            response["error"][i]
-        except KeyError:
-            response["error"][i] = "passed"
-
-    update = False
-    if b"Error" in stdout:
-        for i in range(1, 8):
-            if response["error"][i] == "passed":
-                response["error"][i] = "Possible Syntax-related Errors, recommend to see raw output for more information"
-
-    passed = True
-    for i in response["error"]:
-        if response["error"][i] != "passed":
-            passed = False
+    passed = False
+    if data and len(data) == 1 :
+        new_result = x = data[0].replace("\\n", " ")
+        if 'ERROR' not in new_result and 'FAILED' not in new_result and 'OK' in new_result and 'Ran':
+            passed = True
 
     if passed:
         try:
@@ -113,5 +43,21 @@ def run_code(request):
         except:
             passed = Passed(user_id=request.user.id, problem_id=problem)
             passed.save()
+    return JsonResponse(data= data , safe =False)
 
-    return JsonResponse(data=response)
+
+
+
+from django.http import JsonResponse
+def select_code(request):
+    problem = int(request.GET["problem"])
+    try:
+        print('here is the Code',Code.objects.get(user_id=request.user.id, problem_id=problem))
+        existing_code = Code.objects.get(user_id=request.user.id, problem_id=problem)
+    except:
+        existing_code = {}
+    print('here it is', existing_code)
+
+    return HttpResponse(existing_code.code, content_type="application/json")
+
+
