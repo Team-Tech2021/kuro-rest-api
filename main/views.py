@@ -1,55 +1,34 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
-from editor_api.models import Profile
-import requests
-from django.urls import reverse
-from django.contrib.auth.decorators import login_required
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .serializers import CustomUserSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import AllowAny
 
 
-GITHUB_OAUTH_ID = "42c0b18ea0b0e2ea59c6"
-GITHUB_OAUTH_SECRET = "a863a072d3c74681b49c3d343160b9b130de4c36"
+class CustomUserCreate(APIView):
+    permission_classes = [AllowAny]
 
-# Create your views here.
-def index(request):
-    return render(request, "main/index.html")
+    def post(self, request, format='json'):
+        serializer = CustomUserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                json = serializer.data
+                return Response(json, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def info(request, section):
-    if section != "problem":
-        return HttpResponse("Hello World")
-    return HttpResponse("Hello Problem!")
 
-def login_view(request):
-    return HttpResponseRedirect(f"https://github.com/login/oauth/authorize?client_id={GITHUB_OAUTH_ID}")
+class BlacklistTokenUpdateView(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = ()
 
-def github(request):
-    code = request.GET["code"]
-    info = requests.post(f"https://github.com/login/oauth/access_token?client_id={GITHUB_OAUTH_ID}&client_secret={GITHUB_OAUTH_SECRET}&code={code}", headers={"Accept": "application/json"}).json()
-    print(info)
-    access_token = info["access_token"]
-    info = requests.get("https://api.github.com/user", headers={"Authorization": f"token {access_token}"}).json()
-    # print(info)
-    # is user in the database
-    try:
-        user = (User.objects.get(username=info["login"]))
-        profile = Profile.objects.get(user=user)
-        login(request, user)
-        request.session["avator"] = profile.avator
-
-        return HttpResponseRedirect(reverse("index"))
-    except User.DoesNotExist:
-        user = User.objects.create_user(username=info["login"], password=info["node_id"], email=info["email"])
-        user.save()
-        profile = Profile(user=user, avator=info["avatar_url"])
-        profile.save()
-        login(request, user)
-        request.session["avator"] = profile.avator
-        request.session["avator"] = "false"
-        return HttpResponseRedirect(reverse("index"))
-
-    return HttpResponse(str(info))
-
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
