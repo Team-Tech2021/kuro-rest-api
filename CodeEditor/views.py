@@ -3,16 +3,40 @@ from django.http import HttpResponse, JsonResponse
 from subprocess import Popen
 import subprocess ## To Get output from shell command
 from editor_api.models import Code, Passed
-# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 from editor_api.views import PROBLEMS ##################################### will be changed later
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+from rest_framework import viewsets
+from .serializers import *
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
-import random
-import string
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializers_class = UserSerializer
+
 
 ''' here we should use the request from search query to send test results as json'''
+@csrf_exempt
+# @login_required(redirect_field_name='home')
 def run_code(request):
-    code = request.GET["code"]
-    problem = int(request.GET["problem"])
+    serializer_class = CodeSerializer
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
+    if request.method == 'POST':
+        print('it is a post request')
+    print(request)
+    print('heeeeeeeereeeeee')
+    print(request.POST)
+    code = request.POST.get("code")
+    print('the code',code)
+    problem = request.POST.get("problem")
+    print('the problem',problem)
+    print('here is no error')
+    print('here is the request user' , request.user)
+    # user_id = int(request.GET["user"])
     try:
         Code.objects.get(user_id=request.user.id, problem_id=problem)
         Code.objects.filter(user_id=request.user.id, problem_id=problem).update(code=code)
@@ -44,7 +68,6 @@ def run_code(request):
             passed = Passed(user_id=request.user.id, problem_id=problem)
             passed.save()
     return JsonResponse(data= data , safe =False)
-
 
 
 

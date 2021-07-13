@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-# from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 from django.conf import settings
 
 # Create your models here.
@@ -15,9 +15,9 @@ class Problem(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, blank=True, on_delete=models.CASCADE)
+    USERNAME_FIELD = 'username'
     # user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avator = models.CharField(max_length=255)
-
+    # avator = models.CharField(max_length=255)
     def __str__(self):
         return f"{self.user}"
 

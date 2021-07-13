@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     # local
+    "users"
     "accounts",
     "editor_api",
 ]
@@ -143,7 +144,8 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-AUTH_USER_MODEL = "accounts.CustomUser"
+AUTH_USER_MODEL = "users.CustomUser"
+# AUTH_USER_MODEL = 'auth.User'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'assets'),
