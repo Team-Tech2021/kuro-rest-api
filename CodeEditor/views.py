@@ -4,9 +4,11 @@ from subprocess import Popen
 import subprocess ## To Get output from shell command
 from editor_api.models import Code, Passed
 from django.contrib.auth.decorators import login_required
-from editor_api.views import PROBLEMS ##################################### will be changed later
+# from editor_api.views import PROBLEMS ##################################### will be changed later
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+User = get_user_model()
 from rest_framework import viewsets
 from .serializers import *
 from rest_framework.authentication import TokenAuthentication
@@ -20,7 +22,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 ''' here we should use the request from search query to send test results as json'''
 @csrf_exempt
-# @login_required(redirect_field_name='home')
+@login_required(redirect_field_name='home')
 def run_code(request):
     serializer_class = CodeSerializer
     authentication_classes = [TokenAuthentication, ]
