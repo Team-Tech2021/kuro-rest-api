@@ -28,11 +28,8 @@ env = environ.Env(
 )
 environ.Env.read_env()
 ENVIRONMENT = env.str("ENVIRONMENT")
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-# SECURITY WARNING: keep the secret key used in production secret!
 
-# SECRET_KEY = 'django-insecure-04jf=-b=-l_6i+u$#3)!h04coo)eaa=ha!1+^cq0l1g9vv6h2x'
+
 SECRET_KEY = env.str("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -108,6 +105,7 @@ DATABASES = {
         "PORT": env.int("DATABASE_PORT"),
     }
 }
+
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
