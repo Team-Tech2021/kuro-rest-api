@@ -10,6 +10,8 @@ urlpatterns = [
     path("code/<int:pk>/",CodeDetail.as_view(), name="code_detail"),
     path("problem/", ProblemList.as_view(), name="problems_list"),
     path("problem/<int:pk>/", ProblemDetail.as_view(), name="problems_detail"),
+    path("test/",TestList.as_view(), name="test"),
+    path("test/<int:pk>/", TestDetail.as_view(), name="test_detail"),
 
 
 ]

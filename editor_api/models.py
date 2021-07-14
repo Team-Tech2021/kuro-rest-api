@@ -10,14 +10,14 @@ from project.settings import AUTH_USER_MODEL
 class Problem(models.Model):
         title = models.CharField(max_length=255)
         description = models.TextField()
+        hint = models.TextField()
         starter = models.TextField()
         def __str__(self):
             return f"{self.title}"
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(AUTH_USER_MODEL, blank=True, on_delete=models.CASCADE)
-    # user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE)
     avator = models.CharField(max_length=255)
 
     def __str__(self):
@@ -25,16 +25,18 @@ class Profile(models.Model):
 
 
 class Code(models.Model):
-    user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE , default=None)
-    problem = models.OneToOneField(Problem ,on_delete=models.CASCADE ,default=None)
+    user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE )
+    problem = models.OneToOneField(Problem ,on_delete=models.CASCADE )
     code = models.TextField()
 
 
 class Passed(models.Model):
-    user = models.OneToOneField(AUTH_USER_MODEL , on_delete=models.CASCADE , default=None)
-    problem = models.OneToOneField(Problem  , on_delete=models.CASCADE , default=None)
+    user = models.OneToOneField(AUTH_USER_MODEL , on_delete=models.CASCADE )
+    problem = models.OneToOneField(Problem  , on_delete=models.CASCADE )
 
-
+class Test(models.Model):
+    problem = models.OneToOneField(Problem ,on_delete=models.CASCADE)
+    code = models.TextField()
 
 
 

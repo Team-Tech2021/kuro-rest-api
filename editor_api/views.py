@@ -5,7 +5,7 @@ from rest_framework.generics import (
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView
 )
-from .models import Profile , Passed , Code
+from .models import Profile , Passed , Code ,Test
 # from .permissions import IsOwnerOrReadOnly
 from .serializers import *
 
@@ -53,58 +53,13 @@ class ProblemDetail(RetrieveUpdateDestroyAPIView):
     queryset = Problem.objects.all()
     serializer_class = ProblemSerializer
 
+class TestList(ListCreateAPIView):
+    queryset = Test.objects.all()
+    serializer_class = TestSerializer
 
-# problems = Problem.objects.all()
 
-# def problems(request):
-#     pros = PROBLEMS.copy()
-#     # print(pros)
-#     for i in pros:
-#         try:
-#             Passed.objects.get(user_id=request.user.id, problem_id=i["id"])
-#             i["complete"] = "True"
-#         except Passed.DoesNotExist:
-#             i["complete"] = "False"
-#     return JsonResponse(pros, safe=False)
+class TestDetail(RetrieveUpdateDestroyAPIView):
+    # permission_classes = (IsOwnerOrReadOnly,)
+    queryset = Test.objects.all()
+    serializer_class = TestSerializer
 
-# print(problems[0].description)
-
-PROBLEMS = [
-    {
-        "id": 1,
-        "title": "Nth Fibonacci Sequence",
-        "description": "Write a program to compute nth number ",
-        "starter": "def nth_fib(n):\n\tpass",
-    },
-    {
-        "id": 2,
-        "title": "Repeated Word",
-        "description": "Write a function that accepts a lengthy string parameter.",
-        "starter": "import re\n\t def repeated_word(string): \n\tpass",
-    },
-    {
-        "id": 3,
-        "title": "Insertion Sort",
-        "description": "Implement insertion sort on a given array.\nConvert the pseudo-code into working code in your language \\n",
-        "starter": "def insertion_sort(arr): \n\tpass",
-    },
-     {
-        "id": 4,
-        "title": "Merge Sort",
-        "description": "Implement merge sort on a given array.\nConvert the pseudo-code into working code in your language \\n",
-        "starter": "def merge_sort(arr): \n\tpass",
-    }, 
-      {
-        "id": 5,
-        "title": "Binary Search List",
-        "description": "find out the index if the input value inside the input array using binary search",
-        "starter": "def binary_search(arr,key): \n\tpass",
-    },
-       {
-        "id": 6,
-        "title": "Binary Search List",
-        "description": "takes a list as an argument. Without utilizing any of the built-in methods available to your language, return a list with elements in reversed order.",
-        "starter": "def insert_shift_list(arr, int): \n\tpass",
-    },
-   
-]
