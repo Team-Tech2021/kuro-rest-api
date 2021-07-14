@@ -57,7 +57,9 @@ class TestList(ListCreateAPIView):
     queryset = Test.objects.all()
     serializer_class = TestSerializer
 
+
 class TestDetail(RetrieveUpdateDestroyAPIView):
     # permission_classes = (IsOwnerOrReadOnly,)
     queryset = Test.objects.all()
     serializer_class = TestSerializer
+
