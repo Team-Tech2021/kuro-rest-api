@@ -70,7 +70,6 @@ class ApiTester:
 
         return response.json()
 
-    # TODO adjust parameter names to match API
     def create(self, name, description=None, owner=None):
         """creates a resource in api
 
