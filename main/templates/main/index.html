@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
     <head>
         <title>Kuro</title>
@@ -13,7 +13,7 @@
             }
 
             function problem() {
-                
+
                 document.getElementById("main").innerHTML = ""
                 fetch("/api/problems/")
                 .then(response => response.json())
@@ -25,7 +25,7 @@
                         } else {
                             div.innerHTML = `<a href="/problems/${problems[i]["id"]}/"><h1>${problems[i]["title"]}</h1></a>`
                         }
-                        
+
                         document.getElementById("main").appendChild(div);
                     }
                 })
@@ -47,10 +47,10 @@
                     <li class="nav-item active">
                         <a class="nav-link" onclick="return problem('problem');" href="#">Problems</a>
                     </li>
-                    
+
                 </ul>
                 <!--<a class="nav-link" onclick="displayInfo('problem');" href="">Problems</a>-->
-            </div>
+            <!-- </div>
             {% if not request.user.username %}
                 <a class="nav-link" href="/login">Register/Login</a>
             {% else %}
@@ -64,4 +64,4 @@
             <br>
         </div>
     </body>
-</html>
+</html> -->

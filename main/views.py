@@ -1,55 +1,50 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
-from editor_api.models import Profile
-import requests
+from main.models import User
+from django.contrib.auth import  logout
 from django.urls import reverse
-from django.contrib.auth.decorators import login_required
+from rest_framework import generics
+from django.contrib.auth import login, authenticate
+from main.serializers import UserSignUp , LoginSerializer
 
-
-GITHUB_OAUTH_ID = "42c0b18ea0b0e2ea59c6"
-GITHUB_OAUTH_SECRET = "a863a072d3c74681b49c3d343160b9b130de4c36"
 
 # Create your views here.
 def index(request):
-    return render(request, "main/index.html")
-
-def info(request, section):
-    if section != "problem":
-        return HttpResponse("Hello World")
-    return HttpResponse("Hello Problem!")
-
-def login_view(request):
-    return HttpResponseRedirect(f"https://github.com/login/oauth/authorize?client_id={GITHUB_OAUTH_ID}")
-
-def github(request):
-    code = request.GET["code"]
-    info = requests.post(f"https://github.com/login/oauth/access_token?client_id={GITHUB_OAUTH_ID}&client_secret={GITHUB_OAUTH_SECRET}&code={code}", headers={"Accept": "application/json"}).json()
-    print(info)
-    access_token = info["access_token"]
-    info = requests.get("https://api.github.com/user", headers={"Authorization": f"token {access_token}"}).json()
-    # print(info)
-    # is user in the database
-    try:
-        user = (User.objects.get(username=info["login"]))
-        profile = Profile.objects.get(user=user)
-        login(request, user)
-        request.session["avator"] = profile.avator
-
-        return HttpResponseRedirect(reverse("index"))
-    except User.DoesNotExist:
-        user = User.objects.create_user(username=info["login"], password=info["node_id"], email=info["email"])
-        user.save()
-        profile = Profile(user=user, avator=info["avatar_url"])
-        profile.save()
-        login(request, user)
-        request.session["avator"] = profile.avator
-        request.session["avator"] = "false"
-        return HttpResponseRedirect(reverse("index"))
-
-    return HttpResponse(str(info))
+    return render(request, "/")
 
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
+
+
+class SignUpView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSignUp
+
+class LoginView(generics.RetrieveAPIView):
+    serializer_class = LoginSerializer
+    queryset = User.objects.all()
+
+    error_messages = {
+        'invalid': "Invalid username or password",
+        'disabled': "Sorry, this account is suspended",
+    }
+
+    def _error_response(self, message_key):
+        data = {
+            'success': False,
+            'message': self.error_messages[message_key],
+            'user_id': None,
+        }
+
+    def post(self, request):
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = authenticate(email=email, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+
+                return Response(status=status.HTTP_100_OK)
+            return self._error_response('disabled')
+        return self._error_response('invalid')
