@@ -56,34 +56,55 @@ class ProblemDetail(RetrieveUpdateDestroyAPIView):
 
 # problems = Problem.objects.all()
 
-# def problem_pass(request):
-#     print(request)
-
-#     # pros = .copy()
-#     pros = Problem.objects.all()
+# def problems(request):
+#     pros = PROBLEMS.copy()
+#     # print(pros)
 #     for i in pros:
 #         try:
-#             Passed.objects.get(user_id=request.user.id, problem_id=i.id)
+#             Passed.objects.get(user_id=request.user.id, problem_id=i["id"])
 #             i["complete"] = "True"
 #         except Passed.DoesNotExist:
 #             i["complete"] = "False"
 #     return JsonResponse(pros, safe=False)
-# print(problem_pass(request))
 
-# # print(problems[0].description)
+# print(problems[0].description)
 
 PROBLEMS = [
     {
         "id": 1,
         "title": "Nth Fibonacci Sequence",
-        "description": "<p>Write a program to compute nth number of a <a href=\"https://en.wikipedia.org/wiki/Fibonacci_number\">fibonacci number sequence</a>.</p><br>Starting Numbers: <code>nth_fib(1) = 0</code>, <code>nth_fib(2) = 1</code><br><br><p>Example Input & Output: </p><ul><li><code>nth_fib(2) = 1</code></li><li><code>nth_fib(6) = 5</code></li></ul><br><h4>Note:</h4><p>If you see a RecursionError, make sure you try again, the maximum number for input is 15.</p> <br><br><h4>Video Walkthrough</h4><iframe width='500' height='315' src='https://www.youtube.com/embed/Hq13p2I5UbY' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>",
+        "description": "Write a program to compute nth number ",
         "starter": "def nth_fib(n):\n\tpass",
     },
     {
         "id": 2,
-        "title": "Palindrome Checker",
-        "description": "Return True if the string is a <a href='https://en.wikipedia.org/wiki/Palindrome'>palindromic string</a> (same as you read it backward as forward), given with following constraints: <ul><li>Only check  the alphanumeric part of a string,</li><li>This is case insensitive, means that RaCeCar is a palindromic string.</li></ul> <br><br> <h4>Examples: </h4><ul><li><code>palindrome(\"race CAR\") = True</code></li><li><code>palindrome(\"2_A3*3#A2\") = True</code></li><li><code>palindrome(\"This is not palindrome string\") = False</code></li></ul>.",
-        "starter": "def palindrome(n):\n\tpass",
-
-    }
+        "title": "Repeated Word",
+        "description": "Write a function that accepts a lengthy string parameter.",
+        "starter": "import re\n\t def repeated_word(string): \n\tpass",
+    },
+    {
+        "id": 3,
+        "title": "Insertion Sort",
+        "description": "Implement insertion sort on a given array.\nConvert the pseudo-code into working code in your language \\n",
+        "starter": "def insertion_sort(arr): \n\tpass",
+    },
+     {
+        "id": 4,
+        "title": "Merge Sort",
+        "description": "Implement merge sort on a given array.\nConvert the pseudo-code into working code in your language \\n",
+        "starter": "def merge_sort(arr): \n\tpass",
+    }, 
+      {
+        "id": 5,
+        "title": "Binary Search List",
+        "description": "find out the index if the input value inside the input array using binary search",
+        "starter": "def binary_search(arr,key): \n\tpass",
+    },
+       {
+        "id": 6,
+        "title": "Binary Search List",
+        "description": "takes a list as an argument. Without utilizing any of the built-in methods available to your language, return a list with elements in reversed order.",
+        "starter": "def insert_shift_list(arr, int): \n\tpass",
+    },
+   
 ]
