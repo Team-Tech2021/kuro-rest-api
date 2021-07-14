@@ -69,7 +69,6 @@ class NthFib(unittest.TestCase):
 		"""random test 5, expected {num}, actual {nth_fib(num)}"""
 		assert correct_fib(num) == nth_fib(num)
 
-# Testcase and question description are from: https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/javascript-algorithms-and-data-structures-projects/palindrome-checker
 class PalindromeChecker(unittest.TestCase):
 	def test_2(self):
 		"""palindrome("eye") should return true."""
