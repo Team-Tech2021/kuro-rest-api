@@ -6,21 +6,19 @@ from rest_framework.decorators import api_view
 import urllib.parse
 
 
-''' here we should use the request from search query to send test results as json'''
 @api_view(['POST'])
 def run_code(request):
-
+    '''
+    taken the encoded code and the user id and return the test result of the code and added it to passed table if the result is pass
+    '''
     if request.method == 'POST':
 
-            print(request.POST)
             code = request.data.get('code')
             code = urllib.parse.unquote(code)
-            print('the code',code)
             problem = request.data.get("problem")
-            print('here is no error')
-            print('here is the request user' , request.user)
+
             try:
-                Code.objects.get(user_id=request.user.id, problem_id=problem)
+                Code.objects.get_object_or_404(user_id=request.user.id, problem_id=problem)
                 Code.objects.filter(user_id=request.user.id, problem_id=problem).update(code=code)
             except:
                 code_ = Code(user_id=request.user.id, problem_id=problem, code=code)
@@ -51,7 +49,6 @@ def run_code(request):
 
             if passed:
                 try:
-                    print("I have no problem here 👍")
                     Passed.objects.get(user_id=request.user.id, problem_id=problem)
                 except:
                     passed = Passed(user_id=request.user.id, problem_id=problem)
@@ -62,18 +59,17 @@ def run_code(request):
 
 @api_view(['POST'])
 def check_code(request):
-
+    '''
+    taken the encoded code and the user id and return the test result of the code and return pass=True to user if the result is pass
+    '''
     if request.method == 'POST':
 
-            print(request.POST)
             code = request.data.get('code')
             code = urllib.parse.unquote(code)
-            print('the code',code)
             problem = request.data.get("problem")
-            print('here is no error')
-            print('here is the request user' , request.user)
+
             try:
-                Code.objects.get(user_id=request.user.id, problem_id=problem)
+                Code.get_object_or_404(user_id=request.user.id, problem_id=problem)
                 Code.objects.filter(user_id=request.user.id, problem_id=problem).update(code=code)
             except:
                 code_ = Code(user_id=request.user.id, problem_id=problem, code=code)
@@ -109,6 +105,9 @@ def check_code(request):
 
 @api_view(['GET'])
 def is_passed(request):
+    '''
+    check if a relation between the user and a problem "the user solved the problem" exist
+    '''
     problem = request.GET['problem']
     try:
         Passed.objects.get(user_id=request.user.id, problem_id=problem)
@@ -121,14 +120,15 @@ def is_passed(request):
 
 @api_view(['POST'])
 def select_code(request):
+    '''
+    check if a previous code for a user exist then return it or return empty object/dict
+    '''
     problem = request.POST.get("problem")
     try:
-        print('here is the Code',Code.objects.get(user_id=request.user.id, problem_id=problem))
         existing_code = Code.objects.get(user_id=request.user.id, problem_id=problem)
     except:
         existing_code = {}
         return HttpResponse(existing_code, content_type="application/json")
-    print('here it is', existing_code)
 
     return HttpResponse(existing_code.code, content_type="application/json")
 
