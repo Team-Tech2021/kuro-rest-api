@@ -33,7 +33,7 @@ def run_code(request):
             with open('solution.py', 'w') as file:
                 file.write(code)
 
-            out = Popen(["python", "-m", "unittest", "-q", f"test.NthFib"], stdout=subprocess.PIPE,  stderr=subprocess.STDOUT)
+            out = Popen(["python", "-m", "unittest", "-q", f"test.A{problem}"], stdout=subprocess.PIPE,  stderr=subprocess.STDOUT)
             stdout = out.communicate()
             '''
             the data is the test result we want to return "to send as api response"

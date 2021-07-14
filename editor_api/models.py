@@ -17,7 +17,6 @@ class Problem(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(AUTH_USER_MODEL, blank=True, on_delete=models.CASCADE)
-    # user = models.OneToOneField(User, on_delete=models.CASCADE)
     avator = models.CharField(max_length=255)
 
     def __str__(self):
@@ -34,7 +33,9 @@ class Passed(models.Model):
     user = models.OneToOneField(AUTH_USER_MODEL , on_delete=models.CASCADE , default=None)
     problem = models.OneToOneField(Problem  , on_delete=models.CASCADE , default=None)
 
-
+class Test(models.Model):
+    problem = models.OneToOneField(Problem ,on_delete=models.CASCADE ,default=None)
+    code = models.TextField()
 
 
 
