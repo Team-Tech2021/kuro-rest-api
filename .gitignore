@@ -1,33 +1,21 @@
 Source: https://github.com/github/gitignore/blob/master/Python.gitignore
-<<<<<<< HEAD
-=======
-
->>>>>>> 4c6a0fd1a5b8c158a4ffef24bb9c8ca95dfb3295
 # User generated
 ENV/
 .vscode
 .idea
 .DS_Store
 .history
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 4c6a0fd1a5b8c158a4ffef24bb9c8ca95dfb3295
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 .pytest_cache/
-<<<<<<< HEAD
-# C extensions
-*.so
-=======
 
 # C extensions
 *.so
 
->>>>>>> 4c6a0fd1a5b8c158a4ffef24bb9c8ca95dfb3295
 # Distribution / packaging
 .Python
 build/
@@ -46,26 +34,16 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
-<<<<<<< HEAD
-=======
-
->>>>>>> 4c6a0fd1a5b8c158a4ffef24bb9c8ca95dfb3295
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
-<<<<<<< HEAD
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-=======
 
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
 
->>>>>>> 4c6a0fd1a5b8c158a4ffef24bb9c8ca95dfb3295
 # Unit test / coverage reports
 htmlcov/
 .tox/
@@ -76,41 +54,16 @@ nosetests.xml
 coverage.xml
 *.cover
 .hypothesis/
-<<<<<<< HEAD
-# Translations
-*.mo
-*.pot
-=======
 
 # Translations
 *.mo
 *.pot
 
->>>>>>> 4c6a0fd1a5b8c158a4ffef24bb9c8ca95dfb3295
 # Django stuff:
 *.log
 .static_storage/
 .media/
 local_settings.py
-<<<<<<< HEAD
-# Flask stuff:
-instance/
-.webassets-cache
-# Scrapy stuff:
-.scrapy
-# Sphinx documentation
-docs/_build/
-# PyBuilder
-target/
-# Jupyter Notebook
-.ipynb_checkpoints
-# pyenv
-.python-version
-# celery beat schedule file
-celerybeat-schedule
-# SageMath parsed files
-*.sage.py
-=======
 
 # Flask stuff:
 instance/
@@ -137,7 +90,6 @@ celerybeat-schedule
 # SageMath parsed files
 *.sage.py
 
->>>>>>> 4c6a0fd1a5b8c158a4ffef24bb9c8ca95dfb3295
 # Environments
 .env
 .venv
