@@ -5,11 +5,12 @@ import subprocess ## To Get output from shell command
 from editor_api.models import Code, Passed
 # from django.contrib.auth.decorators import login_required
 from editor_api.views import PROBLEMS ##################################### will be changed later
-
+from django.views.decorators.csrf import csrf_exempt
 import random
 import string
 
 ''' here we should use the request from search query to send test results as json'''
+@csrf_exempt
 def run_code(request):
     code = request.GET["code"]
     problem = int(request.GET["problem"])
