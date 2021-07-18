@@ -93,25 +93,25 @@ TEMPLATES = [
 WSGI_APPLICATION = 'project.wsgi.application'
 
 '''for remote use'''
-DATABASES = {
-    "default": {
-        "ENGINE": env.str("DATABASE_ENGINE"),
-        "NAME": env.str("DATABASE_NAME"),
-        "USER": env.str("DATABASE_USER"),
-        "PASSWORD": env.str("DATABASE_PASSWORD"),
-        "HOST": env.str("DATABASE_HOST"),
-        "PORT": env.int("DATABASE_PORT"),
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": env.str("DATABASE_ENGINE"),
+#         "NAME": env.str("DATABASE_NAME"),
+#         "USER": env.str("DATABASE_USER"),
+#         "PASSWORD": env.str("DATABASE_PASSWORD"),
+#         "HOST": env.str("DATABASE_HOST"),
+#         "PORT": env.int("DATABASE_PORT"),
+#     }
+# }
 
 
 ''' for local use'''
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 
 
