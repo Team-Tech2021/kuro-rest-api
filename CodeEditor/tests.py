@@ -10,7 +10,7 @@ class FunctionsTest(TestCase):
     def test_create_user(self):
 
         url = reverse('token_obtain_pair')
-        u = User.objects.create_user(username='user', email='user@foo.com', password='koko@123')
+        u = User.objects.create_user(username='user', email='user@gmail.com', password='koko@123')
         u.is_active = True
         u.save()
 
@@ -33,6 +33,5 @@ class FunctionsTest(TestCase):
         data = json.dumps(payload)
         response2 = requests.post(url, data=data, headers=headers)
         json_data = json.loads(response2.text)
-        print(json_data['data'])
         self.assertTrue( "test" in json_data['data'][0] or  "tests" in json_data['data'][0] )
 
