@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Code , Passed , Profile , Problem , Test
+from .models import Code , Passed , Problem , Test
 
 
 class CodeSerializer(serializers.ModelSerializer):
@@ -12,10 +12,6 @@ class PassedSerializer(serializers.ModelSerializer):
         model = Passed
         fields = "__all__"
 
-class ProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields = "__all__"
 
 class ProblemSerializer(serializers.ModelSerializer):
     class Meta:
