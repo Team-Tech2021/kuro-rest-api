@@ -18,7 +18,8 @@ def run_code(request):
             problem = request.data.get("problem")
 
             try:
-                Code.objects.get_object_or_404(user_id=request.user.id, problem_id=problem)
+                print(Code.objects.all())
+                Code.objects.get(user_id=request.user.id, problem_id=problem)
                 Code.objects.filter(user_id=request.user.id, problem_id=problem).update(code=code)
             except:
                 code_ = Code(user_id=request.user.id, problem_id=problem, code=code)
@@ -57,7 +58,7 @@ def run_code(request):
 
 
 
-@api_view(['POST'])
+@api_view(['POST','PUT'])
 def check_code(request):
     '''
     taken the encoded code and the user id and return the test result of the code and return pass=True to user if the result is pass
@@ -69,9 +70,12 @@ def check_code(request):
             problem = request.data.get("problem")
 
             try:
-                Code.get_object_or_404(user_id=request.user.id, problem_id=problem)
+                # user_code = Code.objects.get(user_id=request.user.id, problem_id=problem)
+                print("found it")
                 Code.objects.filter(user_id=request.user.id, problem_id=problem).update(code=code)
+                print("finish")
             except:
+                print("I am in the except")
                 code_ = Code(user_id=request.user.id, problem_id=problem, code=code)
                 code_.save()
 
@@ -131,5 +135,7 @@ def select_code(request):
         return HttpResponse(existing_code, content_type="application/json")
 
     return HttpResponse(existing_code.code, content_type="application/json")
+
+
 
 

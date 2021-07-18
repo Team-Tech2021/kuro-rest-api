@@ -46,13 +46,13 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'rest_framework.authtoken',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Third party
     'rest_framework',
     "corsheaders",
-    # 'knox',
     # Local
     "main",
     "editor_api",
@@ -92,23 +92,26 @@ TEMPLATES = [
 ]
 WSGI_APPLICATION = 'project.wsgi.application'
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": env.str("DATABASE_ENGINE"),
-#         "NAME": env.str("DATABASE_NAME"),
-#         "USER": env.str("DATABASE_USER"),
-#         "PASSWORD": env.str("DATABASE_PASSWORD"),
-#         "HOST": env.str("DATABASE_HOST"),
-#         "PORT": env.int("DATABASE_PORT"),
-#     }
-# }
-
+'''for remote use'''
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": env.str("DATABASE_ENGINE"),
+        "NAME": env.str("DATABASE_NAME"),
+        "USER": env.str("DATABASE_USER"),
+        "PASSWORD": env.str("DATABASE_PASSWORD"),
+        "HOST": env.str("DATABASE_HOST"),
+        "PORT": env.int("DATABASE_PORT"),
     }
 }
+
+
+''' for local use'''
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 

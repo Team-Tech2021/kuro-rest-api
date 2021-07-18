@@ -1,5 +1,5 @@
 from django.db import models
-from project.settings import AUTH_USER_MODEL
+from main.models import User
 
 
 
@@ -11,27 +11,18 @@ class Problem(models.Model):
         def __str__(self):
             return f"{self.title}"
 
-
-class Profile(models.Model):
-    user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE)
-    avator = models.CharField(max_length=255)
-
-    def __str__(self):
-        return f"{self.user}"
-
-
 class Code(models.Model):
-    user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE )
-    problem = models.OneToOneField(Problem ,on_delete=models.CASCADE )
+    user = models.ForeignKey(User, on_delete=models.CASCADE )
+    problem = models.ForeignKey(Problem ,on_delete=models.CASCADE )
     code = models.TextField()
 
 
 class Passed(models.Model):
-    user = models.OneToOneField(AUTH_USER_MODEL , on_delete=models.CASCADE )
-    problem = models.OneToOneField(Problem  , on_delete=models.CASCADE )
+    user = models.ForeignKey(User , on_delete=models.CASCADE )
+    problem = models.ForeignKey(Problem  , on_delete=models.CASCADE )
 
 class Test(models.Model):
-    problem = models.OneToOneField(Problem ,on_delete=models.CASCADE)
+    problem = models.ForeignKey(Problem ,on_delete=models.CASCADE)
     code = models.TextField()
 
 
